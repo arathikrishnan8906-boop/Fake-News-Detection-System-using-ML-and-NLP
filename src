@@ -1,0 +1,26 @@
+import pandas as pd
+
+# Load datasets
+fake = pd.read_csv("../data/Fake.csv")
+true = pd.read_csv("../data/True.csv")
+
+# Add labels
+fake["label"] = 1   # Fake news
+true["label"] = 0   # Real news
+
+# Keep only required columns
+fake = fake[["text", "label"]]
+true = true[["text", "label"]]
+
+# Combine datasets
+df = pd.concat([fake, true], axis=0)
+
+# Shuffle dataset
+df = df.sample(frac=1, random_state=42).reset_index(drop=True)
+
+# Save final dataset
+df.to_csv("../data/news.csv", index=False)
+
+print("✅ news.csv created successfully!")
+print(df.head())
+print(df["label"].value_counts())
